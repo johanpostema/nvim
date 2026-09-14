@@ -63,3 +63,53 @@ vim.keymap.set("n", "<leader>tp", toggle_python, { desc = "Python terminal" })
 -- also works while typing inside the terminal itself, unlike <leader>tf which
 -- terminal-mode would otherwise just send to the shell as literal keystrokes
 vim.keymap.set({ "n", "t" }, "<C-t>", toggle_float, { desc = "Toggle floating terminal" })
+
+-- run the current file in a floating terminal, based on filetype
+local function compile_and_run(compiler, file)
+  local name = vim.fn.fnamemodify(file, ":t:r"):gsub("[^%w_%-]", "_")
+  local bin = "/tmp/" .. name
+  return { "sh", "-c", string.format("%s %s -o %s && %s", compiler, vim.fn.shellescape(file), bin, bin) }
+end
+
+local function runner_for(filetype, file)
+  local runners = {
+    python = { "python3", file },
+    lua = { "lua", file },
+    sh = { "bash", file },
+    go = { "go", "run", file },
+    ["yaml.ansible"] = { "ansible-playbook", file },
+    rust = compile_and_run("rustc", file),
+    c = compile_and_run("gcc", file),
+    cpp = compile_and_run("g++", file),
+  }
+  return runners[filetype]
+end
+
+local function run_current_file()
+  local file = vim.fn.expand("%:p")
+  local cmd = runner_for(vim.bo.filetype, file)
+  if not cmd then
+    vim.notify("No runner configured for filetype: " .. vim.bo.filetype, vim.log.levels.WARN)
+    return
+  end
+  vim.cmd("silent! write")
+
+  local width = math.floor(vim.o.columns * 0.8)
+  local height = math.floor(vim.o.lines * 0.8)
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_open_win(buf, true, {
+    relative = "editor",
+    width = width,
+    height = height,
+    row = math.floor((vim.o.lines - height) / 2),
+    col = math.floor((vim.o.columns - width) / 2),
+    style = "minimal",
+    border = "rounded",
+    title = " " .. vim.fn.fnamemodify(file, ":t") .. " ",
+  })
+  vim.fn.jobstart(cmd, { term = true })
+  vim.bo[buf].buflisted = false
+  vim.cmd("startinsert!")
+end
+
+vim.keymap.set("n", "<leader>rr", run_current_file, { desc = "Run current file" })

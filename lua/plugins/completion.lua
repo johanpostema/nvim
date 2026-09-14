@@ -33,7 +33,13 @@ require("blink.cmp").setup({
   },
   signature = { enabled = true },
   sources = {
-    default = { "lsp", "path", "buffer" },
+    default = { "lsp", "path", "buffer", "ansible_bool" },
+    providers = {
+      ansible_bool = {
+        name = "AnsibleBool",
+        module = "completion_sources.ansible_bool",
+      },
+    },
   },
 })
 

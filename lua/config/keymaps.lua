@@ -34,8 +34,6 @@ vim.keymap.set("n", "Y", [["+y$]], { desc = "Yank to end of line (also to clipbo
 
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
-vim.keymap.set("n", "Q", "<nop>")
-
 -- window navigation (AstroNvim-style)
 vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Window left" })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Window down" })
@@ -59,6 +57,13 @@ vim.keymap.set("n", "<leader>cn", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<leader>cp", "<cmd>cprev<CR>zz")
 
 vim.keymap.set("n", "<leader>mm", "<cmd>make<CR>")
+
+-- clear multicursors (native <C-L> default; ours is taken by window-nav)
+vim.keymap.set("n", "<leader>mc", function()
+  vim.cmd("nohlsearch")
+  vim.cmd("diffupdate")
+  vim.api.nvim_buf_clear_namespace(0, vim.api.nvim_create_namespace("nvim.multicursor"), 0, -1)
+end, { desc = "Clear multicursors" })
 
 vim.keymap.set("n", "<leader>us", function()
   vim.wo.spell = not vim.wo.spell

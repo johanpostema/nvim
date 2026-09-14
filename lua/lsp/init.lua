@@ -141,6 +141,7 @@ local servers = {
   "yamlls",
   "gopls",
   "ansiblels",
+  "bashls",
 }
 
 for _, name in ipairs(servers) do
