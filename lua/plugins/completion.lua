@@ -10,7 +10,7 @@ require("blink.cmp").setup({
       function(cmp)
         if cmp.snippet_active() then return cmp.accept() end
       end,
-      "select_and_accept",
+      "accept",
       "snippet_forward",
       "fallback",
     },
@@ -18,6 +18,18 @@ require("blink.cmp").setup({
   completion = {
     documentation = { auto_show = true },
     menu = { max_height = 15 },
+    list = {
+      selection = {
+        -- never auto-select a plain buffer-word match (too easy to
+        -- accidentally accept with Tab/<CR> while typing something new
+        -- that merely shares a prefix with existing text); LSP/path
+        -- matches still preselect as usual.
+        preselect = function()
+          local top = require("blink.cmp.completion.list").items[1]
+          return not (top and top.source_id == "buffer")
+        end,
+      },
+    },
   },
   signature = { enabled = true },
   sources = {
