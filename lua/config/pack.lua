@@ -23,5 +23,6 @@ vim.pack.add({
 
   "https://github.com/windwp/nvim-autopairs",
   "https://github.com/tpope/vim-fugitive",
+  "https://github.com/lewis6991/gitsigns.nvim",
   "https://github.com/mbbill/undotree",
 })
