@@ -55,7 +55,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "gD", vim.lsp.buf.declaration, "Goto declaration")
     map("n", "gi", vim.lsp.buf.implementation, "Goto implementation")
     map("n", "go", vim.lsp.buf.type_definition, "Goto type definition")
-    map("n", "gr", vim.lsp.buf.references, "References")
+    -- no "gr" here: Neovim's native "grr" already does this, and having our
+    -- own complete "gr" mapping alongside the native gr{r,a,x,i,t} group
+    -- made which-key show a confusing "gr means wait for more" popup
     map("n", "gs", vim.lsp.buf.signature_help, "Signature help")
     map("n", "gl", vim.diagnostic.open_float, "Line diagnostics")
     map("n", "<F2>", vim.lsp.buf.rename, "Rename")
@@ -142,6 +144,7 @@ local servers = {
   "gopls",
   "ansiblels",
   "bashls",
+  "dockerls",
 }
 
 for _, name in ipairs(servers) do
