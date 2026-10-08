@@ -145,6 +145,7 @@ local servers = {
   "ansiblels",
   "bashls",
   "dockerls",
+  "gitlab_ci_ls",
 }
 
 for _, name in ipairs(servers) do

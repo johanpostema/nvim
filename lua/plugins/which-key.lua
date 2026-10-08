@@ -1,6 +1,7 @@
 require("which-key").setup({})
 
 require("which-key").add({
+  { "<leader>a", group = "Claude" },
   { "<leader>b", group = "Buffer" },
   { "<leader>f", group = "Find" },
   { "<leader>g", group = "Git" },

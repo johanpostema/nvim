@@ -25,4 +25,11 @@ vim.pack.add({
   "https://github.com/tpope/vim-fugitive",
   "https://github.com/lewis6991/gitsigns.nvim",
   "https://github.com/mbbill/undotree",
+
+  "https://github.com/waldnzwrld/bloocky", -- testing, may be removed again
+
+  "https://github.com/MeanderingProgrammer/render-markdown.nvim",
+
+  "https://github.com/folke/snacks.nvim",
+  "https://github.com/coder/claudecode.nvim",
 })
